@@ -4,42 +4,41 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText logintext , passwordtext;
-    Button btnlogin;
+    EditText txtUserName, txtPassword;
+    Button btnLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        logintext = (EditText) findViewById(R.id.login);
-        passwordtext = (EditText) findViewById(R.id.password);
+        txtUserName = (EditText) findViewById(R.id.txtUserName);
+        txtPassword = (EditText) findViewById(R.id.txtPassword);
 
-        btnlogin = (Button) findViewById(R.id.btn);
+        btnLogin = (Button) findViewById(R.id.btnLogin);
 
-        btnlogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String username = logintext.getText().toString();
-                String password = passwordtext.getText().toString();
-
-                if (username.equals("user") && (password.equals("12345")))
-                {
-                    Toast.makeText( MainActivity.this,  "Welcome" , Toast.LENGTH_SHORT) .show();
-                    Intent intent = new Intent(getApplicationContext(),Nextpage.class);
-                    startActivity(intent);
-                }
-                else
-                {
-                  Toast.makeText(MainActivity.this, "invalidpassword" , Toast.LENGTH_SHORT).show();
-                }
+        btnLogin.setOnClickListener(view -> {
+            if (TextUtils.isEmpty(txtUserName.getText().toString().trim())) {
+                txtUserName.setError("Please enter Username");
+            } else if (TextUtils.isEmpty(txtPassword.getText().toString().trim())){
+                txtPassword.setError("Please enter your Password");
+            } else if (!txtUserName.getText().toString().trim().equals("user")) {
+                txtUserName.setError("Invalid Username");
+            } else if (!txtPassword.getText().toString().trim().equals("12345")) {
+                txtPassword.setError("Invalid Password");
+            } else {
+                txtUserName.setError(null);
+                txtPassword.setError(null);
+                Toast.makeText(MainActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), Nextpage.class);
+                startActivity(intent);
             }
         });
 
